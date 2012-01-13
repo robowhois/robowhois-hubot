@@ -13,11 +13,11 @@
 
 module.exports = (robot) ->
 
-  robot.hear /robowhois\?$/i, (msg) ->
+  robot.respond /robowhois\?$/i, (msg) ->
     msg.send "Loaded!"
 
 
-  robot.hear /(?:robo)?whois account$/i, (msg) ->
+  robot.respond /(?:robo)?whois account$/i, (msg) ->
     request msg, "/account", (content) ->
       account = content.account
 
@@ -26,7 +26,7 @@ module.exports = (robot) ->
       msg.send output
 
 
-  robot.hear /(?:robo)?whois ([a-z0-9-]+\.[a-z0-9-]+)/i, (msg) ->
+  robot.respond /(?:robo)?whois ([a-z0-9-]+\.[a-z0-9-]+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/properties", (content) ->
       properties = content.response.properties
@@ -52,7 +52,7 @@ module.exports = (robot) ->
       msg.send output
 
 
-  robot.hear /(?:robo)?whois r(?:ecord)? (.+)/i, (msg) ->
+  robot.respond /(?:robo)?whois r(?:ecord)? (.+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/record", (content) ->
       response = content.response
@@ -61,7 +61,7 @@ module.exports = (robot) ->
       msg.send response.record
 
 
-  robot.hear /(?:robo)?whois p(?:roperties)? (.+)/i, (msg) ->
+  robot.respond /(?:robo)?whois p(?:roperties)? (.+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/properties", (content) ->
       properties = content.response.properties
@@ -70,7 +70,7 @@ module.exports = (robot) ->
       msg.send prettyPrint(properties)
 
 
-  robot.hear /(?:robo)?whois a(?:vailability)? (.+)/i, (msg) ->
+  robot.respond /(?:robo)?whois a(?:vailability)? (.+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/availability", (content) ->
       properties = content.response # .properties ?!?
