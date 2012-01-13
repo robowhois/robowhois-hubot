@@ -1,0 +1,12 @@
+
+{
+  "name":        "hubot-scripts-robowhois",
+  "version":     "0.0.1",
+  "author":      "Simone Carletti <weppos@weppos.net> (http://www.simonecarletti.com/)",
+  "keywords":    "hubot plugin scripts bot robot robowhois",
+  "description": "RoboWhois script for Hubot.",
+
+  "directories": {
+    "lib": "./src"
+  }
+}
