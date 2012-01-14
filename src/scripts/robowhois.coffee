@@ -41,7 +41,7 @@ module.exports = (robot) ->
                   if properties["registrar"]
                     r  = properties["registrar"]
                     s += "\nRegistrar: #{r.name or r.organization} (#{r.id})"
-                  if !properties["registrant_contacts"].length == 0
+                  if properties["registrant_contacts"].length > 0
                     r  = properties["registrant_contacts"][0]
                     s += "\nRegistrant: #{r.name or r.organization} (#{r.id})"
                   s
