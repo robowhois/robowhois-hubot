@@ -1,15 +1,24 @@
-# WHOIS lookup and domain availability via RoboWhois.
-# http://www.robowhois.com/
+# Description:
+#   WHOIS lookup and domain availability via RoboWhois
 #
-# Requires the following environment variables:
-# - ROBOWHOIS_API_KEY
+# Dependencies:
+#   None
 #
-# robowhois? - Loaded!.
-# [robo]whois account - Gets account details.
-# [robo]whois <domain.ext> - Gets domain WHOIS summary.
-# [robo]whois r[ecord] <domain.ext> - Gets domain WHOIS record.
-# [robo]whois p[roperties] <domain.ext> - Gets domain WHOIS properties as JSON.
-# [robo]whois a[vailability] <domain.ext> - Gets domain WHOIS availability as JSON.
+# Configuration:
+#   ROBOWHOIS_API_KEY
+#
+# Commands:
+#   hubot robowhois? - Loaded!.
+#   hubot [robo]whois account - Gets account details.
+#   hubot [robo]whois <domain.ext> - Gets domain WHOIS summary.
+#   hubot [robo]whois record <domain.ext> - Gets domain WHOIS record.
+#   hubot [robo]whois properties <domain.ext> - Gets domain WHOIS properties as JSON.
+#
+# Notes:
+#   None
+#
+# Author:
+#   Simone Carletti <weppos@weppos.net> (http://www.simonecarletti.com/)
 
 module.exports = (robot) ->
 
@@ -37,13 +46,16 @@ module.exports = (robot) ->
                   if properties["created_on"]
                     s += "\nCreated on: #{new Date(properties["created_on"]).toDateString()}"
                   if properties["expires_on"]
-                    s += "\nExpires on: #{new Date(properties["created_on"]).toDateString()}"
+                    s += "\nExpires on: #{new Date(properties["expires_on"]).toDateString()}"
                   if properties["registrar"]
                     r  = properties["registrar"]
-                    s += "\nRegistrar: #{r.name or r.organization} (#{r.id})"
-                  if properties["registrant_contacts"].length > 0
+                    s += "\nRegistrar: #{r.name or r.organization}"
+                    s += " (#{r.id})" if r.id?
+                  contacts = properties["registrant_contacts"]
+                  if contacts? && contacts.length > 0
                     r  = properties["registrant_contacts"][0]
-                    s += "\nRegistrant: #{r.name or r.organization} (#{r.id})"
+                    s += "\nRegistrant: #{r.name or r.organization}"
+                    s += " (#{r.id})" if r.id?
                   s
                 else if properties["available?"]
                   "The domain is available."
@@ -52,7 +64,7 @@ module.exports = (robot) ->
       msg.send output
 
 
-  robot.respond /(?:robo)?whois r(?:ecord)? (.+)/i, (msg) ->
+  robot.respond /(?:robo)?whois record (.+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/record", (content) ->
       response = content.response
@@ -61,19 +73,10 @@ module.exports = (robot) ->
       msg.send response.record
 
 
-  robot.respond /(?:robo)?whois p(?:roperties)? (.+)/i, (msg) ->
+  robot.respond /(?:robo)?whois properties (.+)/i, (msg) ->
     domain = msg.match[1]
     request msg, "/whois/#{domain}/properties", (content) ->
       properties = content.response.properties
-
-      msg.send "Whois properties for #{domain} (#{content.response.daystamp})"
-      msg.send prettyPrint(properties)
-
-
-  robot.respond /(?:robo)?whois a(?:vailability)? (.+)/i, (msg) ->
-    domain = msg.match[1]
-    request msg, "/whois/#{domain}/availability", (content) ->
-      properties = content.response # .properties ?!?
 
       msg.send "Whois properties for #{domain} (#{content.response.daystamp})"
       msg.send prettyPrint(properties)
@@ -96,4 +99,3 @@ request = (msg, path, callback) ->
 
 prettyPrint = (json) ->
   JSON.stringify(json, null, 4)
-
