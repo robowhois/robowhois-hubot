@@ -1,12 +1,20 @@
-
 {
-  "name":        "hubot-scripts-robowhois",
-  "version":     "0.0.1",
-  "author":      "Simone Carletti <weppos@weppos.net> (http://www.simonecarletti.com/)",
-  "keywords":    "hubot plugin scripts bot robot robowhois",
+  "name": "hubot-robowhois",
+  "version": "0.0.2",
   "description": "RoboWhois script for Hubot.",
-
-  "directories": {
-    "lib": "./src"
+  "keywords": [
+    "hubot",
+    "robowhois"
+  ],
+  "author": "Simone Carletti <weppos@weppos.net> (http://www.simonecarletti.com/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robowhois/robowhois-hubot"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "main": "index.coffee",
+  "dependencies": {
+    "hubot": ">= 2.3.0"
   }
 }
